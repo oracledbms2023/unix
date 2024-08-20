@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="flex">
+    <button id="copyButton1">copy 1</button> <span id="copyResult1"></span>
+    <button id="copyButton2">copy 2</button> <span id="copyResult2"></span>
+    <button id="copyButton3">copy 3</button> <span id="copyResult3"></span>
+    <button id="copyButton4">copy 4</button> <span id="copyResult4"></span>
+    <button id="copyButton5">copy 5</button> <span id="copyResult5"></span>
+</div>
+
+<h4>lab 1</h4>
+<pre id="textToCopy1">
+    import csv
+    file = open("C:/Users/Documents/python_fifth_sem/lab1.csv")
+    data = list(csv.reader(file))
+    length = len(data[0]) - 1
+    h = ['0'] * length
+    print("Initial hypothesis", h)
+    print("Data:")
+    for i in data:
+        print(i)
+    data.pop(0)
+    for i in range(len(data)):
+        if data[i][length] == 'yes':
+            for j in range(len(data[i]) - 1):
+                if h[j] == "0":
+                    h[j] = data[i][j]
+                if h[j] != data[i][j]:
+                    h[j] = '?'
+    print("Final hypothesis (most specific):", h)
+</pre>
+
+<h4>lab 2</h4>
+<pre id="textToCopy2">
+    import csv
+
+    file = open("C:/Users/Documents/python_fifth_sem/lab2data.csv")
+    data = list(csv.reader(file))[1:]
+    
+    concepts = []
+    target = []
+    
+    for i in data:
+        concepts.append(i[:-1])
+        target.append(i[-1])
+    
+    specific_h = concepts[0].copy()
+    general_h = [['?' for i in range(len(specific_h))] for i in range(len(specific_h))]
+    
+    for i, h in enumerate(concepts):
+        if target[i] == "Yes":
+            for x in range(len(specific_h)):
+                if h[x] != specific_h[x]:
+                    specific_h[x] = "?"
+                    general_h[x][x] = '?'
+        if target[i] == "No":
+            for x in range(len(specific_h)):
+                if h[x] != specific_h[x]:
+                    general_h[x][x] = specific_h[x]
+                else:
+                    general_h[x][x] = "?"
+    
+    indices = [i for i, val in enumerate(general_h) if val == ['?', '?', '?', '?', '?', '?']]
+    for i in indices:
+        general_h.remove(['?', '?', '?', '?', '?', '?'])
+    
+    print("final specific:", specific_h, sep="\n")
+    print("final general:", general_h, sep="\n")        
+</pre>
+
+<h4>lab 3</h4>
+<pre id="textToCopy3">
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    
+    dataset = pd.read_csv("C:/Users/SARASWATHI/Documents/python_fifth_sem/dataset3.csv")
+    
+    X = dataset.iloc[:, :-1].values
+    y = dataset.iloc[:, 1].values
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1/3, random_state=0)
+    
+    regressor = LinearRegression()
+    regressor.fit(X_train, y_train)
+    
+    y_pred = regressor.predict([[5]])
+    print(y_pred)
+    
+    plt.scatter(X_train, y_train, color='blue', label='Training Data')
+    plt.plot(X_train, regressor.predict(X_train), color='red', label='Regression Line')
+    plt.xlabel('Independent Variable')
+    plt.ylabel('Dependent Variable')
+    plt.legend()
+    plt.title('Simple Linear Regression Model')
+    plt.show()          
+</pre>
+
+<h4>lab 4</h4>
+<pre id="textToCopy4">
+    import numpy as np 
+    import pandas as pd 
+    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression 
+    from sklearn.metrics import r2_score 
+    
+    data = pd.read_csv("C:/Users/Documents/python_fifth_sem/powerstation.csv") 
+    data.head() 
+    
+    x = data.drop(['PE'], axis=1).values 
+    y = data['PE'].values 
+    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
+    
+    ml = LinearRegression() 
+    ml.fit(x_train, y_train) 
+    
+    y_pred = ml.predict(x_test) 
+    print(y_pred) 
+    print(y_test) 
+    
+    r2_score(y_test, y_pred) 
+    
+    plt.figure(figsize=(10, 10)) 
+    plt.scatter(y_test, y_pred) 
+    plt.xlabel('Actual') 
+    plt.ylabel('Predicted') 
+    plt.title('Actual vs Predicted')
+    plt.show()
+    
+</pre>
+
+
+<h4>lab 5</h4>
+<pre id="textToCopy5">
+    import numpy as np 
+    import pandas as pd 
+    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression 
+    from sklearn.metrics import r2_score 
+    
+    data = pd.read_csv("C:/Users/Documents/python_fifth_sem/powerstation.csv") 
+    data.head() 
+    
+    x = data.drop(['PE'], axis=1).values 
+    y = data['PE'].values 
+    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
+    
+    ml = LinearRegression() 
+    ml.fit(x_train, y_train) 
+    
+    y_pred = ml.predict(x_test) 
+    print(y_pred) 
+    print(y_test) 
+    
+    r2_score(y_test, y_pred) 
+    
+    plt.figure(figsize=(10, 10)) 
+    plt.scatter(y_test, y_pred) 
+    plt.xlabel('Actual') 
+    plt.ylabel('Predicted') 
+    plt.title('Actual vs Predicted')
+    plt.show()
+    
+</pre>
+
+
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+.flex{
+    width: 350px;
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+}
+h4{
+    color:white;
+}
+pre{
+    color:white;
+}
