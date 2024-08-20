@@ -17,162 +17,189 @@
 
 <h4>lab 1</h4>
 <pre id="textToCopy1">
-    import csv
-    file = open("C:/Users/Documents/python_fifth_sem/lab1.csv")
-    data = list(csv.reader(file))
-    length = len(data[0]) - 1
-    h = ['0'] * length
-    print("Initial hypothesis", h)
-    print("Data:")
-    for i in data:
-        print(i)
-    data.pop(0)
-    for i in range(len(data)):
-        if data[i][length] == 'yes':
-            for j in range(len(data[i]) - 1):
-                if h[j] == "0":
-                    h[j] = data[i][j]
-                if h[j] != data[i][j]:
-                    h[j] = '?'
-    print("Final hypothesis (most specific):", h)
+#!/bin/sh
+for i in $*
+do
+if [ -d $i ]
+then
+echo "large file size is"
+echo `ls -Rl $1 | grep "^-" | tr -s ' ' | cut -d ' ' -f 5,9 | sort -n |tail -1`
+else
+echo "not a directory"
+fi
+done
+
+echo "enter the path name"
+read p
+i=1
+j=1
+len=`echo $p | wc -c`
+while [ $i -le $len ]
+do
+x=`echo $p | cut -d ' ' -f $j`
+namelength=`echo $x | wc -c`
+mkdir -p $x
+cd $x
+pwd
+x=`expr $j + 1`
+i=`expr $i + $namelength`
+done
 </pre>
 
 <h4>lab 2</h4>
 <pre id="textToCopy2">
-    import csv
+    
+echo "Enter the file name 1 : $1"
+echo "Enter the file name 2 : $2"
+if [ $# -eq 0 ]
+then
+echo "no arguments passed"
+elif [ ! -e $1 -o ! -e $2 ]
+then
+echo  "file does not exist"
+else
+x=`ls -1 $1 | cut -c 1-10`
+y=`ls -1 $2 | cut -c 1-10`
+if [ $x = $y ]
+then
+echo "permission are same : $x"
+else
+echo "permissions are different"
+echo "permissions of $1 is $x"
+echo "permissions of $2 is $y"
+fi
+fi
 
-    file = open("C:/Users/Documents/python_fifth_sem/lab2data.csv")
-    data = list(csv.reader(file))[1:]
-    
-    concepts = []
-    target = []
-    
-    for i in data:
-        concepts.append(i[:-1])
-        target.append(i[-1])
-    
-    specific_h = concepts[0].copy()
-    general_h = [['?' for i in range(len(specific_h))] for i in range(len(specific_h))]
-    
-    for i, h in enumerate(concepts):
-        if target[i] == "Yes":
-            for x in range(len(specific_h)):
-                if h[x] != specific_h[x]:
-                    specific_h[x] = "?"
-                    general_h[x][x] = '?'
-        if target[i] == "No":
-            for x in range(len(specific_h)):
-                if h[x] != specific_h[x]:
-                    general_h[x][x] = specific_h[x]
-                else:
-                    general_h[x][x] = "?"
-    
-    indices = [i for i, val in enumerate(general_h) if val == ['?', '?', '?', '?', '?', '?']]
-    for i in indices:
-        general_h.remove(['?', '?', '?', '?', '?', '?'])
-    
-    print("final specific:", specific_h, sep="\n")
-    print("final general:", general_h, sep="\n")        
+echo "Enter Arguments : $1"
+if [ $# -eq  0 ]
+then
+echo "No command line arguments is passed"
+exit
+fi
+while [ $1 ]
+do
+cat /etc/passwd | cut -d ":" -f 1 | grep "^$1" > temp
+a=`cat tmp`
+if [ "$a" != "$1" ]
+then
+echo "ERROR:$1 is an invalid argument"
+else
+echo "Home Directory for  $1 is"
+echo `cat/etc/passwd | grep "^$1" | cut -d ":" -f 6`
+fi
+shift
+done
+
 </pre>
 
 <h4>lab 3</h4>
 <pre id="textToCopy3">
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    from sklearn.model_selection import train_test_split
-    from sklearn.linear_model import LinearRegression
-    
-    dataset = pd.read_csv("C:/Users/SARASWATHI/Documents/python_fifth_sem/dataset3.csv")
-    
-    X = dataset.iloc[:, :-1].values
-    y = dataset.iloc[:, 1].values
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1/3, random_state=0)
-    
-    regressor = LinearRegression()
-    regressor.fit(X_train, y_train)
-    
-    y_pred = regressor.predict([[5]])
-    print(y_pred)
-    
-    plt.scatter(X_train, y_train, color='blue', label='Training Data')
-    plt.plot(X_train, regressor.predict(X_train), color='red', label='Regression Line')
-    plt.xlabel('Independent Variable')
-    plt.ylabel('Dependent Variable')
-    plt.legend()
-    plt.title('Simple Linear Regression Model')
-    plt.show()          
+#!/bin/sh
+echo "enter the file name"
+read file
+if [ -f $file ]
+then
+set -- `ls -l $file`
+echo "file permission $1"
+echo "number of links $2"
+echo "user name $3"
+echo "group name $4"
+echo "file size $5 bytes"
+echo "date of modification $6 $7"
+echo "time of modification $8"
+echo "name of file $9"
+ls -l $file
+else
+echo "file does not exist"
+fi
+
+#!/bin/sh
+stty -echo
+clear
+echo "Enter the password"
+read pass1
+echo "Re-Enter the password"
+read pass2
+val=1
+while [ $val -eq 1]
+do
+if [ $pass1 = $pass2 ]
+then
+val=0
+echo "Terminal locked"
+echo "To unlock enter the password"
+pass1=""
+until ["$pass1"="$pass2"]
+do
+read pass1
+echo "Terminal locked"
+done
+echo "Terminal unlocked"
+stty echo
+else
+echo "password mismatch"
+stty -echo
+read pass2
+fi
+done
 </pre>
 
 <h4>lab 4</h4>
 <pre id="textToCopy4">
-    import numpy as np 
-    import pandas as pd 
-    import matplotlib.pyplot as plt
-    from sklearn.model_selection import train_test_split
-    from sklearn.linear_model import LinearRegression 
-    from sklearn.metrics import r2_score 
-    
-    data = pd.read_csv("C:/Users/Documents/python_fifth_sem/powerstation.csv") 
-    data.head() 
-    
-    x = data.drop(['PE'], axis=1).values 
-    y = data['PE'].values 
-    
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
-    
-    ml = LinearRegression() 
-    ml.fit(x_train, y_train) 
-    
-    y_pred = ml.predict(x_test) 
-    print(y_pred) 
-    print(y_test) 
-    
-    r2_score(y_test, y_pred) 
-    
-    plt.figure(figsize=(10, 10)) 
-    plt.scatter(y_test, y_pred) 
-    plt.xlabel('Actual') 
-    plt.ylabel('Predicted') 
-    plt.title('Actual vs Predicted')
-    plt.show()
-    
+#!/bin/sh
+echo "Enter the file name"
+read file
+if [ -z $file ]
+then
+echo " no arguments passed "
+elif [ ! -f $file ]
+then
+echo "file does not exist"
+else
+tr '[a-z]' '[A-Z]'<$file
+fi
+
+#!/bin/sh
+file=$1
+set -- `ls -l $file`
+lcnt=$2
+if [ $lcnt -eq 1 ]
+then
+echo "no other links"
+exit
+else
+set -- `ls -i $file`
+inode=$1
+find "." -xdev -inum $inode -print
+fi
 </pre>
 
 
 <h4>lab 5</h4>
 <pre id="textToCopy5">
-    import numpy as np 
-    import pandas as pd 
-    import matplotlib.pyplot as plt
-    from sklearn.model_selection import train_test_split
-    from sklearn.linear_model import LinearRegression 
-    from sklearn.metrics import r2_score 
-    
-    data = pd.read_csv("C:/Users/Documents/python_fifth_sem/powerstation.csv") 
-    data.head() 
-    
-    x = data.drop(['PE'], axis=1).values 
-    y = data['PE'].values 
-    
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
-    
-    ml = LinearRegression() 
-    ml.fit(x_train, y_train) 
-    
-    y_pred = ml.predict(x_test) 
-    print(y_pred) 
-    print(y_test) 
-    
-    r2_score(y_test, y_pred) 
-    
-    plt.figure(figsize=(10, 10)) 
-    plt.scatter(y_test, y_pred) 
-    plt.xlabel('Actual') 
-    plt.ylabel('Predicted') 
-    plt.title('Actual vs Predicted')
-    plt.show()
+#!/bin/sh
+echo "enter the file name"
+read file
+if [ -z $file ]
+then
+echo "no arguments passed "
+elif [ ! -f $file ]
+then
+echo "file does not exist "
+else
+f=`ls -l $file | cut -d " " -f 8`
+echo "file creation time: "$f
+fi
+
+#!/bin/sh
+set `date`
+y=$3
+if [ $y -le 9 ]
+then
+date | sed "s/$3/*/"
+else
+date | sed "s/$3/**/"
+fi
     
 </pre>
 
